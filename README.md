@@ -36,7 +36,7 @@ npm install
 
 3. **Import the SQL file** into PostgreSQL:
    ```sh
-   psql -U postgres -d your_database_name -f ./psql/db_backup.sql
+   pg_restore -U postgres -d your_database -p 5432 db_backup.sql
    ```
    > 🔹 Replace `your_database_name` with your actual database name.
 
