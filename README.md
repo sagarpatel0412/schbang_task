@@ -34,7 +34,7 @@ npm install
    CREATE DATABASE your_database_name;
    ```
 
-3. **Import the SQL file** into PostgreSQL:
+3. **Import the SQL file** into PostgreSQL from psql folder:
    ```sh
    pg_restore -U postgres -d your_database -p 5432 db_backup.sql
    ```
