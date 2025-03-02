@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model fact_ad_metrics_daily {
+  fact_id        Int    @id @default(autoincrement())
+  date_id        Int
+  region_id      Int?
+  age_id         Int?
+  gender_id      Int?
+  platform_id    Int
+  placement_id   Int
+  device_type_id Int?
+  impressions    Int
+  clicks         Int
+  cost           Float
+  conversions    Int
+  custom_metrics Json
+
+  // Relations
+  date       dim_date       @relation(fields: [date_id], references: [date_id])
+  region     dim_region?    @relation(fields: [region_id], references: [region_id])
+  age_group  dim_age_group? @relation(fields: [age_id], references: [age_id])
+  gender     dim_gender?    @relation(fields: [gender_id], references: [gender_id])
+  platform   dim_platform   @relation(fields: [platform_id], references: [platform_id])
+  placement  dim_placement  @relation(fields: [placement_id], references: [placement_id])
+  device_type dim_device_type? @relation(fields: [device_type_id], references: [device_type_id])
+}
+
+model dim_date {
+  date_id   Int      @id @default(autoincrement())
+  date_value DateTime 
+  facts      fact_ad_metrics_daily[]
+}
+
+model dim_region {
+  region_id   Int    @id @default(autoincrement())
+  region_name String 
+  facts       fact_ad_metrics_daily[]
+}
+
+model dim_age_group {
+  age_id    Int    @id @default(autoincrement())
+  age_range String 
+  facts     fact_ad_metrics_daily[]
+}
+
+model dim_gender {
+  gender_id   Int    @id @default(autoincrement())
+  gender_name String
+  facts       fact_ad_metrics_daily[]
+}
+
+model dim_platform {
+  platform_id   Int    @id @default(autoincrement())
+  platform_name String 
+  facts         fact_ad_metrics_daily[]
+}
+
+model dim_placement {
+  placement_id   Int    @id @default(autoincrement())
+  placement_name String 
+  facts          fact_ad_metrics_daily[]
+}
+
+model dim_device_type {
+  device_type_id   Int    @id @default(autoincrement())
+  device_type_name String 
+  facts            fact_ad_metrics_daily[]
+}

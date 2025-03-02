@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### SchBang Task
+```md
+# 🚀 Next.js + Prisma + PostgreSQL Setup Guide
 
-## Getting Started
+## 📌 Prerequisites
+Before you begin, ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (LTS version recommended)
+- [PostgreSQL](https://www.postgresql.org/download/)
+- [Prisma](https://www.prisma.io/)
+- [pnpm](https://pnpm.io/) or `npm`/`yarn` for package management
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 📂 **1️⃣ Project Setup**
+Clone the repository and install dependencies:
+
+```sh
+git clone https://github.com/sagarpatel0412/schbang_task.git
+cd schbang_task
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 **2️⃣ Database Setup**
+### 📥 Import SQL File into PostgreSQL
+1. **Start PostgreSQL** on your machine.
+2. **Create a new database** in PostgreSQL:
+   ```sh
+   psql -U postgres
+   ```
+   Then run:
+   ```sql
+   CREATE DATABASE your_database_name;
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Import the SQL file** into PostgreSQL:
+   ```sh
+   psql -U postgres -d your_database_name -f ./psql/db_backup.sql
+   ```
+   > 🔹 Replace `your_database_name` with your actual database name.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🔧 **3️⃣ Configure Prisma**
+1. Copy the `.env.example` file and rename it to `.env`:
+   ```sh
+   cp .env.example .env
+   ```
+2. Open `.env` and set your PostgreSQL connection string:
+   ```env
+   DATABASE_URL="postgresql://your_username:your_password@localhost:5432/your_database_name"
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Push the database schema to Prisma:
+   ```sh
+   npx prisma db push
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Generate Prisma Client:
+   ```sh
+   npx prisma generate
+   ```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 **4️⃣ Start the Next.js Application**
+Run the development server:
+```sh
+npm run dev  # or npm run dev / yarn dev
+```
+The app will be available at:
+```sh
+http://localhost:3000
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🛠 **5️⃣ Prisma Studio (Optional)**
+To explore your database visually:
+```sh
+npx prisma studio
+```
+
+---
+
+## 🐞 **Troubleshooting**
+### **1. Error: `relation "table_name" does not exist`**
+- Ensure you've imported the SQL file correctly.
+- Run `npx prisma db push` to sync Prisma with your database.
+
+### **2. PostgreSQL Authentication Error**
+- Check your `.env` file and ensure your **PostgreSQL credentials are correct**.
+- Restart PostgreSQL and try again.
+
+### **3. Prisma Client Not Found**
+- Run:
+  ```sh
+  npx prisma generate
+  ```
+---
+## Contact
+Created by [@sagarpatel0412](https://github.com/sagarpatel0412) - feel free to contact me!
